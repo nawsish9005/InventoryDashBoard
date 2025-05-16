@@ -1,0 +1,45 @@
+USE [InventoryMS]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ManageProducts]    Script Date: 5/16/2025 8:18:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[sp_ManageProducts]
+    @Action NVARCHAR(10),
+    @Id INT = NULL,
+    @Name NVARCHAR(100) = NULL,
+    @Category NVARCHAR(50) = NULL,
+    @Price DECIMAL(18,2) = NULL,
+    @StockQuantity INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @Action = 'GET'
+    BEGIN
+        SELECT * FROM Products
+    END
+
+    ELSE IF @Action = 'POST'
+    BEGIN
+        INSERT INTO Products (Name, Category, Price, StockQuantity, LastUpdated)
+        VALUES (@Name, @Category, @Price, @StockQuantity, GETDATE())
+    END
+
+    ELSE IF @Action = 'PUT'
+    BEGIN
+        UPDATE Products
+        SET Name = @Name,
+            Category = @Category,
+            Price = @Price,
+            StockQuantity = @StockQuantity,
+            LastUpdated = GETDATE()
+        WHERE Id = @Id
+    END
+
+    ELSE IF @Action = 'DELETE'
+    BEGIN
+        DELETE FROM Products WHERE Id = @Id
+    END
+END
