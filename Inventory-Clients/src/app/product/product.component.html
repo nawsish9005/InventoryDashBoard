@@ -96,6 +96,12 @@
                   <i class="bi" [ngClass]="sortAsc ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                 </span>
               </th>
+              <th (click)="sort('lastUpdated')" style="cursor: pointer;">
+                lastUpdated
+                <span *ngIf="sortField === 'lastUpdated'">
+                  <i class="bi" [ngClass]="sortAsc ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+                </span>
+              </th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -104,9 +110,11 @@
               <td>{{ product.name }}</td>
               <td>{{ product.category }}</td>
               <td>{{ product.price | currency:'৳'}}</td>
-
               <td [ngClass]="{ 'text-danger': product.stockQuantity < 5 }">
                 {{ product.stockQuantity }}
+              </td>
+              <td>
+                {{ product.lastUpdated | date:'medium' }}
               </td>
               <td>
                 <button class="btn btn-sm btn-warning me-2" (click)="edit(product)">Edit</button>
